@@ -1,0 +1,224 @@
+=pod
+
+=head1 NAME
+
+verictl - manage clip-lsm veriexec entries
+
+=head1 SYNOPSIS
+
+=over 12
+
+=item B<verictl> [B<-D>] B<-lu> (B<-f> I<file> | B<-c> I<arg>)
+
+=item B<verictl> [B<-D>] B<-xXy> B<-c> I<arg>
+
+=item B<verictl> [B<-D>] B<-U> I<ctx>
+
+=item B<verictl> [B<-D>] B<-dempvh>
+
+=item B<verictl> [B<-D>] B<-L> I<level>
+
+=back
+
+=head1 DESCRIPTION
+
+B<verictl> configures the veriexec subsystem of the running kernel 
+through ioctl calls on F</dev/veriexec>. It supports several forms of
+command line, depending on the operation to perform.
+
+=head1 OPTIONS
+
+=over 12
+
+=item B<-c> I<arg>
+
+Use I<arg> for an entry load/unload operation or a context 
+creation/deletion/modification operation. I<arg> describes a single entry, in
+a format that can be obtained with B<verictl -h>.
+
+=item B<-d>
+
+Disable veriexec in the current context. This sets the current level to 0, if
+possible, and is equivalent to B<verictl> B<-L> I<inactive>.
+
+=item B<-D>
+
+Debug mode. Do not perform actual ioctl calls, but print what would be done on
+the standard output.
+
+=item B<-e>
+
+Enable veriexec in the current context. This adds 'active' to the current level,
+and is equivalent to B<verictl> B<-L> I<active>.
+
+=item B<-f> I<file>
+
+Use I<file> as the path to a file to read entries from, for an entry load/unload 
+operation. This option cannot be specified at the same time as B<-c> I<arg>. 
+I<file> may contain several entry description, one per line, in the same format as
+that used for I<arg>. When several entries are specified, they are loaded or unloaded
+in the top to bottom order. In that case, an error on a given entry will prevent the
+following entries from being configured.
+
+=item B<-h>
+
+Display a help message on the standard output stream, then exit. This also provides
+the supported argument formats and keywords (which can change depending on the kernel
+B<verictl> was built against).
+
+=item B<-l>
+
+Load one or several veriexec entries, specified through either B<-c> I<arg> or B<-f> I<file>.
+
+=item B<-L> I<level>
+
+Set the level for a veriexec context. I<level> is a list of level keywords, separated by ':'.
+The supported keywords can be obtained through B<verictl> B<-h>. Optionally, I<level> can be
+prefixed by a context number, separated from the keywords by a '-'. In that case, the level
+is set in the context matching that context number. Otherwise, the current context's level is 
+modified.
+
+=item B<-m>
+
+Read the total number of allocated veriexec entries, if the kernel was configured to support
+this operation.
+
+=item B<-p>
+
+Print the current context's level.
+
+=item B<-u>
+
+Unload one or several veriexec entries, specified through either B<-c> I<arg> or B<-f> I<file>.
+
+=item B<-U> I<ctx>
+
+Set I<ctx> as the update context.
+
+=item B<-v>
+
+Display the B<verictl> version and exit.
+
+=item B<-x> 
+
+Create the veriexec context specified as B<-c> I<arg>.
+
+=item B<-X>
+
+Delete the veriexec context specified as B<-c> I<arg>.
+
+=item B<-y>
+
+Modify the veriexec context specified as B<-c> I<arg>.
+
+=back
+
+=head1 FILES
+
+=over 12
+
+=item F</dev/veriexec>
+
+The configuration device. Must be present for B<veriexec> to work.
+
+=item F</proc/veriexec>
+
+Allows reading the veriexec entries, if the kernel was configured to
+support it. Not needed for B<veriexec> to work.
+
+=back
+
+=head1 ENTRY FORMAT
+
+Each veriexec entry must have the following format :
+
+=over 12
+
+=item F<file> I<ctx> I<ctx> I<flags> I<cap_eff> I<cap_prm> I<cap_inh> I<privs> I<algo> I<fingerprint>
+
+(one entry per line in a multi-entry file for use with the B<-f> command line argument)
+
+=back
+
+The different fields have the following formats :
+
+=over 12
+
+=item F<file> 
+
+Absolute path for the file (executable or library) this entry describes. This is relative to the root
+of the namespace associated to the veriexec context for this entry.
+
+=item I<ctx>
+
+Veriexec context number for the entry. If I<ctx> is left as I<-1>, the current context of the B<verictl>
+process manipulating the entry will be used.
+
+=item I<flags>
+
+Veriexec flags for this entry. Either '-' (no flags), or a string of letters, with each letter associated
+with a veriexec flag (see veriexec documentation).
+
+=item I<cap_eff> I<cap_prm> I<cap_inh>
+
+Capabilities (respectively effective, permitted, and inheritable) for this entry. Each field is either '-'
+(no capabilities), or a list of keywords, each associated with a single capability, and separated by
+'|' characters. The valid keywords are the name of the capabilities, without the leading I<CAP_>, e.g. 
+I<SYS_ADMIN> for I<CAP_SYS_ADMIN>.
+
+=item I<privs>
+
+CLSM privileges for this entry. Either '-' (no privs), or a string of letters, with each letter associated
+with a CLSM privilege (see CLIP LSM documentation).
+
+=item I<algo>
+
+Name of the algorithm used to hash the file.
+
+=item I<fingerprint>
+
+Hashed fingerprint of the file.
+
+=back
+
+A veriexec context entry as the following format :
+
+=over 12
+
+=item I<ctx> I<level> I<capset> I<privset>
+
+=back
+
+with the following subfields :
+
+=over 12
+
+=item I<ctx>
+
+Context number.
+
+=item I<level>
+
+Level for this context, with the same format as for the B<-L> command line argument.
+
+=item I<capset>
+
+Capability bounding set for this context, with the same format as the I<cap_eff>, etc. fields in
+a veriexec file entry.
+
+=item I<privset>
+
+Privilege bounding set for this context, with the same format as the I<privs> field in a veriexec
+file entry.
+
+=back
+
+=head1 AUTHOR 
+
+Vincent Strubel <L<clipos@ssi.gouv.fr>>
+
+=head1 SEE ALSO
+
+L<devctl(8)|devctl>
+
+=cut

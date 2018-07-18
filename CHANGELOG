@@ -1,0 +1,506 @@
+# CLIP ChangeLog for app-clip/verictl
+
+*verictl-2.1.0-r1 (25 Jan 2017)
+
+  25 Jan 2017; Thomas Letan <clipos@ssi.gouv.fr>
+  +verictl-2.1.0-r1.ebuild, -verictl-2.1.0.ebuild:
+  use new verictld2_vroots from verictl eclass
+  Original patch: Matthieu Fertre
+
+*verictl-2.1.0 (23 Jun 2016)
+
+  23 Jun 2016; Yves-Alexis Perez <clipos@ssi.gouv.fr>
+  +verictl-2.1.0.ebuild, -verictl-2.0.6.ebuild:
+  Code cleanup, full support for amd64.
+
+*verictl-2.0.6 (03 Feb 2014)
+
+  03 Feb 2014; Vincent Strubel <clipos@ssi.gouv.fr>
+  +verictl-2.0.6.ebuild, -verictl-2.0.5-r5.ebuild,
+  files/devctl, files/veriexec:
+  Code cleanup, use a single call to verictl -l -f '-' to load
+  all entries in a given directory.
+
+*verictl-2.0.5-r5 (30 Dec 2013)
+
+  30 Dec 2013; Vincent Strubel <clipos@ssi.gouv.fr>
+  +verictl-2.0.5-r5.ebuild, -verictl-2.0.5-r4.ebuild:
+  Force rebuild to add openrc dependency.
+
+*verictl-2.0.5-r4 (24 Oct 2013)
+
+  24 Oct 2013; Vincent Strubel <clipos@ssi.gouv.fr>
+  +verictl-2.0.5-r4.ebuild, -verictl-2.0.5-r3.ebuild:
+  -files/ctx, -files/ctxlevels, -files/update, 
+  files/devctl, files/reducecap, files/veriexec:
+  Move veriexec context definitions and levels into 
+  /etc/jails/*/veriexec.{ctx,level}, to make it easier
+  to add new ones.
+  Clenup init scripts for openRC.
+
+*verictl-2.0.5-r3 (30 Sep 2013)
+
+  30 Sep 2013; Vincent Strubel <clipos@ssi.gouv.fr>
+  +verictl-2.0.5-r3.ebuild, -verictl-2.0.5-r2.ebuild,
+  files/reducecap:
+  Leave CAP_SYS_ADMIN on verictl veriexec entry.
+
+*verictl-2.0.5-r2 (06 Aug 2012)
+
+  06 Aug 2012; Vincent Strubel <clipos@ssi.gouv.fr>
+  +verictl-2.0.5-r2.ebuild, -verictl-2.0.5-r1.ebuild, files/ctx:
+  Rebuild against clip-kernel >= 3.2.26-r1 to support 
+  CLSM_PRIV_UNSHARE, authorize it in UPDATE/RM_* jails.
+
+*verictl-2.0.5-r1 (15 Jun 2012)
+
+  15 Jun 2012; Vincent Strubel <clipos@ssi.gouv.fr>
+  +verictl-2.0.5-r1.ebuild, -verictl-2.0.5.ebuild,
+  files/ctx:
+  Fix CAP_FSETID attribution to UPDATE (not X11) context.
+
+*verictl-2.0.5 (07 Jun 2012)
+
+  07 Jun 2012; Vincent Strubel <clipos@ssi.gouv.fr>
+  +verictl-2.0.5.ebuild, -verictl-2.0.4-r6.ebuild,
+  files/ctx, files/ctxlevels, files/reducecap:
+  Add support for 'enforce_inherit' level flag.
+
+*verictl-2.0.4-r6 (06 Jun 2012)
+
+  06 Jun 2012; Vincent Strubel <clipos@ssi.gouv.fr>
+  +verictl-2.0.4-r6.ebuild, -verictl-2.0.4-r5.ebuild,
+  files/devctl:
+  Make the devctl init script depend on the new swapon init
+  script, otherwise swaper0 is missing for devctl mapper
+  permissions.
+
+*verictl-2.0.4-r5 (06 Jun 2012)
+
+  06 Jun 2012; Vincent Strubel <clipos@ssi.gouv.fr>
+  +verictl-2.0.4-r5.ebuild, -verictl-2.0.4-r4.ebuild,
+  files/reducecap:
+  Remove crond entry when enabling.
+
+*verictl-2.0.4-r4 (14 Feb 2012)
+
+  14 Feb 2012; Vincent Strubel <clipos@ssi.gouv.fr>
+  +verictl-2.0.4-r4.ebuild, -verictl-2.0.4-r3.ebuild,
+  files/veriexec,files/reducecap:
+  Do not set 'enforce_mntro' on the main veriexec context in
+  init.d/veriexec, but only in reducecap - otherwise we can't
+  remove the sysctl entry in reducecap.
+
+*verictl-2.0.4-r3 (10 Feb 2012)
+
+  10 Feb 2012; Vincent Strubel <clipos@ssi.gouv.fr>
+  +verictl-2.0.4-r3.ebuild, -verictl-2.0.4-r2.ebuild,
+  files/reducecap:
+  Remove the veriexec entry for sysctl at the end of reducecap,
+  since it is not needed afterwards.
+
+*verictl-2.0.4-r2 (05 Oct 2011)
+
+  05 Oct 2011; Vincent Strubel <clipos@ssi.gouv.fr>
+  +verictl-2.0.4-r2.ebuild, -verictl-2.0.4-r1.ebuild,
+  files/ctx:
+  Add CLSM_PRIV_NETLINK_AUDIT to AUDIT's authorized bitmask.
+
+*verictl-2.0.4-r1 (03 Oct 2011)
+
+  03 Oct 2011; ANSSI <clipos@ssi.gouv.fr>
+  +verictl-2.0.4-r1.ebuild, -verictl-2.0.4.ebuild:
+  Rebuild to include capabilities change (Audit privilege).
+
+*verictl-2.0.4 (30 Aug 2011)
+
+  30 Aug 2011; Vincent Strubel <clipos@ssi.gouv.fr>
+  +verictl-2.0.4.ebuild, -verictl-2.0.3.ebuild:
+  Fix build with gcc-4.5.3.
+
+*verictl-2.0.3 (13 Jul 2011)
+
+  13 Jul 2011; Vincent Strubel <clipos@ssi.gouv.fr>
+  +verictl-2.0.3.ebuild, -verictl-2.0.2-r3.ebuild:
+  Rebuild against newer kernel (2.6.38+) - capabilities change.
+
+  30 Jun 2011; Vincent Strubel <clipos@ssi.gouv.fr>
+  verictl-2.0.2-r3.ebuild:
+  Actually fix RDEPEND on rm.
+
+  10 Jun 2011; Vincent Strubel <clipos@ssi.gouv.fr>
+  verictl-2.0.2-r3.ebuild:
+  Fix DEPEND being picked up as RDEPEND on rm.
+
+  07 Jun 2011; Vincent Strubel <clipos@ssi.gouv.fr>
+  verictl-2.0.2-r3.ebuild:
+  Add missing clip to IUSE.
+
+*verictl-2.0.2-r3 (18 May 2011)
+
+  18 May 2011; Vincent Strubel <clipos@ssi.gouv.fr>
+  +verictl-2.0.2-r3.ebuild, -verictl-2.0.2-r2.ebuild,
+  files/ctx:
+  Authorize CLSM_PRIV_FUSE in RM_x, AUDIT and ADMIN contexts.
+
+*verictl-2.0.2-r2 (05 May 2011)
+
+  05 May 2011; Vincent Strubel <clipos@ssi.gouv.fr>
+  +verictl-2.0.2-r2.ebuild, -verictl-2.0.2-r1.ebuild:
+  Bump to force rebuild.
+
+*verictl-2.0.2-r1 (30 Mar 2011)
+
+  30 Mar 2011; Vincent Strubel <clipos@ssi.gouv.fr>
+  +verictl-2.0.2-r1.ebuild, -verictl-2.0.2.ebuild:
+  Bump to force rebuild.
+
+  25 Jan 2011; Vincent Strubel <clipos@ssi.gouv.fr>
+  verictl-2.0.2.ebuild:
+  Fix dependencies for build.
+
+*verictl-2.0.2 (12 Nov 2010)
+
+  12 Nov 2010; Vincent Strubel <clipos@ssi.gouv.fr>
+  +verictl-2.0.2.ebuild, -verictl-2.0.1-r1.ebuild:
+  Fix error handling. Return proper errors when loading fails, 
+  but on the other hand be more relaxed when unloading :
+   - do not error out on unsupported flags/privs/caps, simply
+   ignore them (they're not actually used when unloading, anyway)
+   - do not error out when the unload ioctl returns ENOENT.
+  This should help us avoid catastrophic upgrade failures due to
+  improperly introduced new privileges, by at least allowing the
+  new package's prerm script to run.
+
+*verictl-2.0.1-r1 (28 Oct 2010)
+
+  28 Oct 2010; Vincent Strubel <clipos@ssi.gouv.fr>
+  +verictl-2.0.1-r1.ebuild, -verictl-2.0.1.ebuild,
+  files/ctx:
+  Rbump to force recompile and add CLSM_PRIV_DRM. Add CLSM_PRIV_DRM
+  to X11 context.
+
+*verictl-2.0.1 (11 Aug 2010)
+
+  11 Aug 2010; Vincent Strubel <clipos@ssi.gouv.fr>
+  +verictl-2.0.1.ebuild, -verictl-2.0.0-r4.ebuild:
+  Bump - fix compilation + build against newer kernel for new
+  veriexec flags.
+
+*verictl-2.0.0-r4 (22 Sep 2009)
+
+  22 Sep 2009; Vincent Strubel <clipos@ssi.gouv.fr>
+  +verictl-2.0.0-r4.ebuild, -verictl-2.0.0-r3.ebuild:
+  Authorize CLSM_PRIV_NETLINK in RM jails.
+
+*verictl-2.0.0-r3 (03 Jun 2009)
+
+  03 Jun 2009; Vincent Strubel <clipos@ssi.gouv.fr>
+  +verictl-2.0.0-r3.ebuild, -verictl-2.0.0-r2.ebuild:
+  Bump to force compilation against newest clip-kernel, thus
+  adding support for CLSM_PRIV_FIRMWARE ('F').
+
+*verictl-2.0.0-r2 (22 May 2009)
+
+  22 May 2009; Vincent Strubel <clipos@ssi.gouv.fr>
+  +verictl-2.0.0-r2.ebuild, -verictl-2.0.0-r1.ebuild,
+  files/devctl:
+  Fix device-mapper major number: now 253, rather than 254.
+
+*verictl-2.0.0-r1 (23 Apr 2009)
+
+  23 Apr 2009; Vincent Strubel <clipos@ssi.gouv.fr>
+  +verictl-2.0.0-r1.ebuild, -verictl-2.0.0.ebuild,
+  files/ctx:
+  Allow NETCLIENT / NETLINK privs in AUDIT and ADMIN jails, to 
+  enable use of X11 forwarding.
+
+*verictl-2.0.0 (20 Apr 2009)
+
+  20 Apr 2009; Vincent Strubel <clipos@ssi.gouv.fr>
+  +verictl-2.0.0.ebuild, -verictl-1.2.3.ebuild,
+  files/reducecap, files/ctx:
+  Bump. Ported to 2.6.28 kernel. New verictl entry format, 
+  with symbolic rather than numeric caps.
+
+  17 Apr 2009; Vincent Strubel <clipos@ssi.gouv.fr>
+  verictl-1.2.3.ebuild:
+  Switch to verictl2.eclass.
+
+*verictl-1.2.3 (18 Mar 2009)
+
+  18 Mar 2009; Vincent Strubel <clipos@ssi.gouv.fr>
+  +verictl-1.2.3.ebuild, -verictl-1.2.2-r2.ebuild:
+  Fix GCC-4 warnings.
+
+*verictl-1.2.2-r2 (08 Oct 2008)
+
+  08 Oct 2008; Vincent Strubel <clipos@ssi.gouv.fr>
+  +verictl-1.2.2-r2.ebuild, -verictl-1.2.2-r1.ebuild:
+  No-op bump to force rebuild against newer kernel includes, 
+  with support for the new CLSM_PRIV_XFRM* privileges.
+
+*verictl-1.2.2-r1 (22 Jul 2008)
+
+  22 Jul 2008; Vincent Strubel <clipos@ssi.gouv.fr>
+  +verictl-1.2.2-r1.ebuild, -verictl-1.2.2.ebuild,
+  files/ctx:
+  Remove CAP_LEASE from RM_X veriexec context bcaps.
+
+*verictl-1.2.2 (10 Jul 2008)
+
+  10 Jul 2008; Vincent Strubel <clipos@ssi.gouv.fr>
+  +verictl-1.2.2.ebuild, -verictl-1.2.1-r2.ebuild,
+  files/ctx, files/ctxlevels:
+  Fit the context levels and capsets some more.
+  Fix MP build problem with man8/verictl.8.
+
+*verictl-1.2.1-r1 (10 Jun 2008)
+
+  10 Jun 2008; Vincent Strubel <clipos@ssi.gouv.fr>
+  +verictl-1.2.1-r1.ebuild, -verictl-1.2.1.ebuild:
+  Make verictl entries use CCSD hashes.
+
+*verictl-1.2.1 (09 Jun 2008)
+
+  09 Jun 2008; Vincent Strubel <clipos@ssi.gouv.fr>
+  +verictl-1.2.1.ebuild, -verictl-1.2.0-r7.ebuild:
+  Add support for CCSD hashes. Some parser fixes.
+
+*verictl-1.2.0-r7 (07 Apr 2008)
+
+  07 Apr 2008; Vincent Strubel <clipos@ssi.gouv.fr>
+  +verictl-1.2.0-r7.ebuild, -verictl-1.2.0-r6.ebuild, 
+  files/ctx:
+  Add CAP_DAC_OVERRIDE and CAP_CHOWN to the authorized veriexec
+  set for ADMINclip (needed by install_ccsd).
+
+*verictl-1.2.0-r6.ebuild (12 Dec 2007)
+
+  12 Dec 2007; Vincent Strubel <clipos@ssi.gouv.fr>
+  +verictl-1.2.0-r6.ebuild, -verictl-1.2.0-r5.ebuild,
+  files/veriexec:
+  Add veriexec to runlevel "nonetwork" *AND* "default" (bug #105).
+  Remove stupid empty stop() function from veriexec.
+  
+  07 Nov 2007; Vincent Strubel <clipos@ssi.gouv.fr>
+  Remove stale ebuilds before 1.2.0-r5.
+
+*verictl-1.2.0-r5.ebuild (16 Oct 2007)
+
+  16 Oct 2007; Vincent Strubel <clipos@ssi.gouv.fr>
+  +verictl-1.2.0-r5.ebuild, files/ctx:
+  Add CAP_SYS_TIME, CAP_NET_BIND_SERVICE and CLSM_PRIV_NETSERVER to
+  the UPDATEclip veriexec ctx, for ntp.
+  Also fix the sed expression : s/pattern/d => /pattern/d
+ 
+*verictl-1.2.0-r4.ebuild (09 Oct 2007)
+
+  09 Oct 2007; Vincent Strubel <clipos@ssi.gouv.fr>
+  +verictl-1.2.0-r4.ebuild, files/ctx:
+  Add CAP_SYS_TIME to the cap_bset for ADMINclip's veriexec context.
+
+*verictl-1.2.0-r3.ebuild (03 Oct 2007)
+
+  03 Oct 2007; Vincent Strubel <clipos@ssi.gouv.fr>
+  +verictl-1.2.0-r3.ebuild, files/devctl:
+  Add 'md' root device support to devctl. For now, we disable all
+  root device protection in that case.
+  
+*verictl-1.2.0-r2.ebuild (02 Oct 2007)
+
+  02 Oct 2007; Vincent Strubel <clipos@ssi.gouv.fr>
+  +verictl-1.2.0-r2.ebuild:
+  Merge from EADS's verictl-1.1.8-r1, with following ChangeLog:
+	 
+	 *verictl-1.1.8-r1.ebuild (09 Aug 2007)
+
+	    09 Aug 2007; EADS D&S <clipos@ssi.gouv.fr>
+	    +verictl-1.1.8-r1.ebuild:
+   	    Change the way ctx is filter to avoid blank lines
+
+  Note that verictl-1.1.8-r2 was not merged (diff: no activation of 
+  kernel.clip.mount in reducecap). Will try to do it through a proper devctl 
+  configuration.
+
+*verictl-1.2.0-r1.ebuild (18 Sep 2007)
+
+  18 Sep 2007; Vincent Strubel <clipos@ssi.gouv.fr>
+  +verictl-1.2.0-r1.ebuild, +files/devctl:
+  Move devctl script from baselayout-clip into this package. 
+  Add all init scripts to the appropriate runlevel through a postinst
+  script.
+  Add a devctl entry to deny any reads to the /boot partition, to 
+  protect kernel symbols.
+  
+  28 Aug 2007; Vincent Strubel <clipos@ssi.gouv.fr>
+  files/reducecap:
+  Add dependency on devctl.
+
+*verictl-1.2.0.ebuild (21 Aug 2007)
+
+  21 Aug 2007; Vincent Strubel <clipos@ssi.gouv.fr>
+  +verictl-1.2.0.ebuild, files/veriexec:
+  Bump. Switch build to configure script, add man pages. 
+  Some code cleanup in verictl.
+  New utility: devctl, to control block device access permissions
+  through /dev/devctl.
+  Removed -C <ctx> support, which isn't really useful.
+
+*verictl-1.1.8-r1.ebuild (03 Aug 2007)
+
+  03 Aug 2007; Vincent Strubel <clipos@ssi.gouv.fr>
+  files/veriexec, +verictl-1.1.8-r1.ebuild:
+  Remove setattr from veriexec init script, it is now done with
+  the rest of vprocunhide. Bump ebuild to reflect changes to 
+  ${FILESDIR} contents and force an upgrade (and remove stupid
+  dependency on util-vserver).
+
+  31 Jul 2007; Vincent Strubel <clipos@ssi.gouv.fr>
+  files/reducecap:
+  Add iked and spmd to dependencies.
+
+  26 Jul 2007; Vincent Strubel <clipos@ssi.gouv.fr>
+  files/reducecap:
+  Do not touch kernel.clip.networking, it is not always there, and
+  doesn't need to be set besides.
+
+*verictl-1.1.8.ebuild (11 Jun 2007)
+
+  11 Jun 2007; Vincent Strubel <clipos@ssi.gouv.fr>
+  +verictl-1.1.8.ebuild, files/veriexec, files/ctx, files/ctxlevels:
+  Bump, adds support for the newest flags in clip-kernel : KEEPPRIVS
+  and IMMORTAL. Fix init script passing empty lines to verictl.
+  Give a forced CAP_CONTEXT in context 0, to allow manipulating 
+  the levels for other contexts without an inheritable cap.
+  Also changed the init script, for finer grained level setting.
+  This also adds support for passing the context for loads/unloads 
+  and level operations as a -C <ctx> argument.
+  
+*verictl-1.1.7-r1.ebuild (07 Jun 2007)
+
+  07 Jun 2007; Vincent Strubel <clipos@ssi.gouv.fr>
+  +verictl-1.1.7-r1.ebuild, files/reducecap, files/veriexec:
+  Add IUSE core-rm. Remove all rm (and secure_update_rm) contexts
+  in /etc/veriexec/ctx* if not present. Refined reducecap depends,
+  make /proc/veriexec readable in WATCH ctx in the veriexec init
+  script. Also create contexts 503 and 504 as placeholders for 
+  soon-to-come ADMIN and AUDIT jails.
+  
+*verictl-1.1.7.ebuild (30 May 2007)
+
+  30 May 2007; Vincent Strubel <clipos@ssi.gouv.fr>
+  +verictl-1.1.7.ebuild:
+  Bump, keep in sync with current kernel.
+
+*verictl-1.1.6.ebuild (10 May 2007)
+
+  10 May 2007; Vincent Strubel <clipos@ssi.gouv.fr>
+  +verictl-1.1.6.ebuild:
+  Bump, keep in sync with current kernel.
+  
+*verictl-1.1.5.ebuild (07 May 2007)
+
+  07 May 2007; Vincent Strubel <clipos@ssi.gouv.fr>
+  +verictl-1.1.5.ebuild, files/ctx, files/ctxlevels:
+  Bump, remove experimental DIG_NONE stuff.
+  Add secure_update contexts : 505 and 506, with CAP_SYS_CHROOT 
+  authorized.
+
+*verictl-1.1.4-r1 (03 May 2007)
+
+  03 May 2007; Vincent Strubel <clipos@ssi.gouv.fr>
+  +verictl-1.1.4-r1.ebuild, files/reducecap:
+  Bump clip-kernel dependency to 2.6.19.7-r4, activate clsm mount
+  controls in reducecap.
+  
+*verictl-1.1.4 (24 Apr 2007)
+
+  24 Apr 2007; Vincent Strubel <clipos@ssi.gouv.fr>
+  +verictl-1.1.4.ebuild, files/ctxlevels, files/ctx, 
+  Minor bump, adds support for 'inactive' level.
+  
+*verictl-1.1.3 (10 Apr 2007)
+
+  10 Apr 2007; Vincent Strubel <clipos@ssi.gouv.fr>
+  +verictl-1.1.3.ebuild, files/ctxlevels, files/ctx, 
+  files/veriexec, files/reducecap, +files/update:
+  Bump, support new features in clip-kernel-2.6.19-r2.
+  Activate networking hooks in reducecap.
+
+*verictl-1.1.2 (26 Mar 2007)
+
+  26 Mar 2007; Vincent Strubel <clipos@ssi.gouv.fr>
+  +verictl-1.1.2.ebuild, files/ctxlevels:
+  Bump, support new networking hooks + veriexec admin privilege.
+  We need to delay enabling veriexec in RM contexts until after
+  we have loaded an initial verictl entry in there, so that enabling
+  is moved to app-clip/clip-vservers.
+  
+*verictl-1.1.1 (06 Mar 2007)
+
+  06 Mar 2007; Vincent Strubel <clipos@ssi.gouv.fr>
+  +verictl-1.1.1.ebuild:
+  Bump. Stricter CFLAGS.
+  
+*verictl-1.1.0 (19 Fev 2007)
+
+  19 Fev 2007; Vincent Strubel <clipos@ssi.gouv.fr>
+  +verictl-1.1.0.ebuild:
+  Bump, adds CLSM privs support, and therefore changes config file
+  format.
+
+*verictl-1.0.3-r1 (08 Fev 2007)
+
+  08 Fev 2007; Vincent Strubel <clipos@ssi.gouv.fr>
+  +verictl-1.0.3-r1.ebuild, files/reducecap:
+  Adapt to new logic for rootcap : we pass the actual root cap 
+  rather than an activation number. Drop CAP_SYS_MODULE from cap-bound
+  afterwards. Add compatible baselayout-clip to RDEPENDS.
+  
+*verictl-1.0.3 (05 Fev 2007)
+
+  05 Fev 2007; Vincent Strubel <clipos@ssi.gouv.fr>
+  +verictl-1.0.3.ebuild, files/ctx, files/ctxlevels,
+  Version bump, added delegate support for UPDATE jail, added that 
+  to the ctx and ctxlevels, immutable and with a null cap bounding set.
+  
+*verictl-1.0.2-r2 (30 Jan 2007)
+
+  30 Jan 2007; Vincent Strubel <clipos@ssi.gouv.fr>
+  +verictl-1.0.2-r2.ebuild, +files/ctx, +files/ctxlevels,
+  files/veriexec, +files/reducecap:
+  Add IUSE static. Move config files to /etc/veriexec, add RM contexts.
+  Split up veriexec init script between set up (veriexec) and root cap
+  reduction (reducecap), so we can call clip_vservers in between to set
+  up the RM contexts.
+  Add IUSE veriexec-guest for jail-side installs, if set do not install 
+  /etc stuff.
+  
+  
+*verictl-1.0.2-r1 (22 Jan 2007)
+
+  22 Jan 2007; Vincent Strubel <clipos@ssi.gouv.fr>
+  +verictl-1.0.2-r1.ebuild, +files/veriexec{,.ctx,.ctxlvl}:
+  Add init script and its configuration files to the default install.
+  
+*verictl-1.0.2 (16 Jan 2007)
+
+  16 Jan 2007; Vincent Strubel <clipos@ssi.gouv.fr>
+  +verictl-1.0.2.ebuild:
+  Version bump : keep in sync with veriexec code : add ctx management
+  from admin ctx, dev locks.
+  
+*verictl-1.0.1 (12 Jan 2007)
+
+  12 Jan 2007; Vincent Strubel <clipos@ssi.gouv.fr>
+  +verictl-1.0.1.ebuild:
+  Add verictl eclass support. Add clip-devel IUSE, in which case we
+  also build veribypass, a smallish program that gives us a shell with
+  full caps (including inheritable set).
+
+*verictl-1.0 (11 Jan 2007)
+
+  11 Jan 2007; Vincent Strubel <clipos@ssi.gouv.fr>
+  +verictl-1.0.ebuild:
+  Initial import.

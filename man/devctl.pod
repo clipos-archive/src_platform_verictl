@@ -1,0 +1,128 @@
+=pod
+
+=head1 NAME
+
+devctl - manage clip-lsm block device permissions
+
+=head1 SYNOPSIS
+
+=over 12
+
+=item B<devctl> [B<-uvh>] B<-c> I<arg>
+
+=item B<devctl> [B<-uvh>] B<-f> I<conf_file>
+
+=back
+
+=head1 DESCRIPTION
+
+B<devctl> is a utility to load or unload device permission entries in
+the clip-lsm device store.
+
+=head1 OPTIONS
+
+B<devctl> supports the following options:
+
+=over 12
+
+=item B<-c> I<arg>
+
+Load or unload the (unique) entry specified as I<arg>. The format of
+I<arg> is described in the B<ENTRY FORMAT> section. 
+This option and B<-f> are exclusive. One and only one of those must be
+passed on the command line.
+
+=item B<-f> F<conf_file>
+
+Load or unload the entries specified in the file F<conf_file>, with the 
+format described in the B<ENTRY FORMAT> section.
+This option and B<-c> are exclusive. One and only one of those must be
+passed on the command line.
+
+=item B<-u> 
+
+Unload. This unload the entries specified on the command line or in the
+configuration file, if they exist. The default (without this option) is
+to load the specified entries.
+
+=item B<-v>
+
+Display version number and exit.
+
+=item B<-h>
+
+Display help and exit.
+
+=back
+
+=head1 ENTRY FORMAT
+
+Entries passed on the command line as B<-c> I<arg> must have the following
+format :
+
+=over 12
+
+=item I<major> I<minor> I<range> I<priority> I<perms>
+
+=back
+
+where I<major>, I<minor>, I<range> and I<priority> are integers specifying, 
+respectively, the base major, base minor, minor range and priority (must be > 0)
+for the entry, and I<perms> is a string of key-letters specifying the access 
+permissions for the device range. The supported key-letters are as follows:
+
+=over 12
+
+=item B<r>
+
+Read access, either through a block special file or through mounting.
+
+=item B<w>
+
+Write access, either through a block special file or through mounting.
+
+=item B<x>
+
+Execute access: mounting without the I<noexec> flag.
+
+=item B<d>
+
+Device access: mounting without the I<nodev> flag.
+
+=item B<s>
+
+Setuid access: mounting without the I<nosuid> flag.
+
+=back
+
+=head1 PRIVILEGES
+
+Loading and unloading device entries is only permitted when the 
+I<kernel.clip.mount> sysctl is inactive (i.e. set to 1).
+Loading and unloading device entries also requires that the caller 
+hold the I<CAP_SYS_ADMIN> capability.
+
+=head1 FILES
+
+=over 12
+
+=item F</dev/devctl>
+
+The configuration device. Must be present for B<devctl> to work.
+
+=item F</proc/devctl>
+
+Allows reading the devctl entries, if the kernel was configured to
+support it. Not needed for B<devctl> to work.
+
+=back
+
+=head1 AUTHOR 
+
+Vincent Strubel <L<clipos@ssi.gouv.fr>>
+
+=head1 SEE ALSO
+
+L<verictl(8)|verictl>
+ 
+=cut

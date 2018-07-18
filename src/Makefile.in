@@ -1,0 +1,111 @@
+################# configure part ##############################
+VERICTL_STATIC = @static@
+DO_VERIBYPASS = @veribypass@
+DO_DEVCTL = @devctl@
+KERNEL_INCLUDES = @KERNEL_INCLUDES@
+
+CC = @CC@
+srcdir = @srcdir@
+SHELL = @SHELL@
+CFLAGS = @CFLAGS@
+LDFLAGS = @LDFLAGS@ 
+PREFIX = @prefix@
+prefix = @prefix@
+exec_prefix = @exec_prefix@
+sbindir = @sbindir@
+bindir = @bindir@
+
+
+VERICTL_SRC := parse.c cmd.c options.c verictl.c
+DEVCTL_SRC := devctl.c
+VERICTL := verictl
+DEVCTL := devctl
+
+.PHONY: all 
+
+all: build
+
+###############################################################
+ifndef VERBOSE
+MAKEFLAGS += -s --no-print-directory
+ECHO = echo
+else 
+ECHO = echo > /dev/null
+endif
+
+OBJS_DIR ?= obj
+VERICTL_OBJFILES := ${foreach file, ${patsubst %.c,%.o,${VERICTL_SRC}}, ${OBJS_DIR}/${file}}
+DEVCTL_OBJFILES := ${foreach file, ${patsubst %.c,%.o,${DEVCTL_SRC}}, ${OBJS_DIR}/${file}}
+
+DEPS_DIR = ${OBJS_DIR}/.deps
+VERICTL_DEPFILES := ${foreach file, ${basename ${VERICTL_SRC}}, ${DEPS_DIR}/${file}.d}
+DEVCTL_DEPFILES := ${foreach file, ${basename ${DEVCTL_SRC}}, ${DEPS_DIR}/${file}.d}
+
+OBJFILES := ${VERICTL_OBJFILES}
+DEPFILES := ${VERICTL_DEPFILES} 
+EXES := ${VERICTL}
+
+ifeq (${DO_DEVCTL}, yes)
+OBJFILES += ${DEVCTL_OBJFILES} 
+DEPFILES += ${DEVCTL_DEPFILES} 
+EXES += ${DEVCTL} 
+endif
+
+ifeq (${VERICTL_STATIC}, yes)
+LDFLAGS += -static
+endif
+
+CFLAGS += -idirafter ${KERNEL_INCLUDES} -DVERSION=${VERSION}
+
+
+###############################################################
+.PHONY: build clean mrproper maintainer-clean
+
+${OBJS_DIR}:
+	mkdir -p ${OBJS_DIR}
+
+${DEPS_DIR}:
+	mkdir -p ${DEPS_DIR}
+
+${OBJS_DIR}/%.o:%.c Makefile
+	@${ECHO} "        CC                $<"
+	$(CC) $(CFLAGS) $(IFLAGS) -MT $@ -MD -MP -MF ${DEPS_DIR}/$*.d -c -o $@ $<
+
+${VERICTL}: ${VERICTL_OBJFILES}
+	@${ECHO} "        LD                $@"
+	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
+
+${DEVCTL}: ${DEVCTL_OBJFILES}
+	@${ECHO} "        LD                $@"
+	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
+
+ifeq (${DO_VERIBYPASS}, yes)
+build: ${OBJS_DIR} ${DEPS_DIR} ${EXES} veribypass
+else
+build: ${OBJS_DIR} ${DEPS_DIR} ${EXES}
+endif
+
+install: all
+	list='$(EXES)'; for exe in $$list; do \
+		${ECHO} "        install -D $$exe ${DESTDIR}${sbindir}/$$exe" ;\
+		install -D $$exe ${DESTDIR}${sbindir}/$$exe ;\
+	done
+ifeq (${DO_VERIBYPASS}, yes)
+	${ECHO} "        install -D veribypass ${DESTDIR}${bindir}/veribypass"
+	install -D veribypass ${DESTDIR}${bindir}/veribypass
+endif
+
+clean:
+	@${ECHO} "        CLEAN             ${EXES} ${OBJFILES}"
+	rm -f ${EXES} ${OBJFILES} ${DEPFILES} veribypass
+
+veribypass: veribypass.c 
+	@${ECHO} "        CC+LD             $<"
+	$(CC) -static -o veribypass veribypass.c
+
+mrproper: clean
+	rmdir ${DEPS_DIR} ${OBJS_DIR}
+	rm -f Makefile
+
+
+-include ${DEPFILES}
